@@ -237,12 +237,18 @@ export default function AppointmentsPage() {
   resizable
   popup
   toolbar={true}
-  popup
-  defaultView="week"
-  views={["month", "week", "day", "agenda"] as any}
-defaultView="month"
-  }}
   defaultView="month"
+  views={["month", "week", "day", "agenda"] as any}
+  length={7}
+  step={30}
+  timeslots={2}
+  min={new Date(2026, 0, 1, 8, 0)}
+  max={new Date(2026, 0, 1, 20, 0)}
+  showMultiDayTimes
+  draggableAccessor={() => true}
+  startAccessor={(event: any) => new Date(event.start)}
+  endAccessor={(event: any) => new Date(event.end)}
+/>
   }}
   length={7}
   step={30}
