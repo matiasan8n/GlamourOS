@@ -238,6 +238,7 @@ export default function AppointmentsPage() {
           defaultView="week"
           views={["day", "week", "agenda"] as any}
           toolbar={true}
+          length={7}
           min={new Date(2026, 0, 1, 8, 0)}
           max={new Date(2026, 0, 1, 20, 0)}
           step={30}
