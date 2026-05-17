@@ -101,7 +101,7 @@ export default function AppointmentsPage() {
           .from("appointments")
           .select(`
             *,
-            clients(full_name, phone),
+            clients(full_name, phone, email),
             services(name, price, duration_minutes),
             staff(full_name, specialty)
           `)
