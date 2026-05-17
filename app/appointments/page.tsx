@@ -230,67 +230,98 @@ export default function AppointmentsPage() {
       </div>
 
       <div className="bg-white border border-[#E7DDE1] rounded-3xl p-4 shadow-sm h-[680px] overflow-hidden">
-        <DnDCalendar
-          localizer={localizer}
-          events={events}
-          selectable
-          resizable
-          defaultView="day"
-          views={["day", "week", "agenda"] as any}
-          toolbar={true}
-          length={7}
-          min={new Date(2026, 0, 1, 8, 0)}
-          max={new Date(2026, 0, 1, 20, 0)}
-          step={30}
-          timeslots={2}
-          popup
-          showMultiDayTimes
-          draggableAccessor={() => true}
-          startAccessor={(event: any) => new Date(event.start)}
-          endAccessor={(event: any) => new Date(event.end)}
-          style={{
-            height: "100%",
-          }}
-   
+      <DnDCalendar
+  localizer={localizer}
+  events={events}
+  selectable
+  resizable
+  popup
+  toolbar={true}
+  defaultView="week"
+  views={{
+    month: false,
+    day: true,
+    week: true,
+    agenda: true,
+  }}
+  length={7}
+  step={30}
+  timeslots={2}
+  min={new Date(2026, 0, 1, 8, 0)}
+  max={new Date(2026, 0, 1, 20, 0)}
+  showMultiDayTimes
+  draggableAccessor={() => true}
+  startAccessor={(event: any) => new Date(event.start)}
+  endAccessor={(event: any) => new Date(event.end)}
+  style={{
+    height: "100%",
+    minHeight: "650px",
+  }}
+  onSelectSlot={(slotInfo: any) => {
+    setSelectedDate(slotInfo.start)
+    setCreateOpen(true)
+  }}
+  onSelectEvent={(event: any) => {
+    setSelectedAppointment(event.resource || event)
+    setDetailOpen(true)
+  }}
+  onEventDrop={async ({ event, start, end }: any) => {
+    try {
+      await supabase
+        .from("appointments")
+        .update({
+          start_time: start,
+          end_time: end,
+        })
+        .eq("id", event.id)
+
+      loadData()
+    } catch (error) {
+      console.error(error)
+    }
+  }}
+  onEventResize={async ({ event, start, end }: any) => {
+    try {
+      await supabase
+        .from("appointments")
+        .update({
+          start_time: start,
+          end_time: end,
+        })
+        .eq("id", event.id)
+
+      loadData()
+    } catch (error) {
+      console.error(error)
+    }
+  }}
   eventPropGetter={(event: any) => {
-  const status = String(
-    event.resource?.status || "scheduled"
-  ).toLowerCase();
+    const status = String(
+      event.resource?.status || "scheduled"
+    )
 
-  let backgroundColor = "#C74375";
+    let backgroundColor = "#EC4899"
 
-  switch (status) {
-    case "completed":
-      backgroundColor = "#16A34A";
-      break;
+    if (status === "completed") {
+      backgroundColor = "#10B981"
+    }
 
-    case "cancelled":
-      backgroundColor = "#DC2626";
-      break;
+    if (status === "cancelled") {
+      backgroundColor = "#EF4444"
+    }
 
-    case "pending":
-      backgroundColor = "#EAB308";
-      break;
-
-    case "scheduled":
-    default:
-      backgroundColor = "#C74375";
-      break;
-  }
-
-  return {
-    style: {
-      backgroundColor,
-      borderRadius: "14px",
-      border: "none",
-      color: "#ffffff",
-      fontSize: "14px",
-      fontWeight: 600,
-      padding: "4px 8px",
-      boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
-    },
-  };
-}}
+    return {
+      style: {
+        backgroundColor,
+        borderRadius: "12px",
+        border: "none",
+        color: "white",
+        padding: "4px",
+        fontSize: "13px",
+      },
+    }
+  }}
+/>
           onEventDrop={rescheduleAppointment}
           onEventResize={rescheduleAppointment}
           onSelectSlot={(slot: any) => {
