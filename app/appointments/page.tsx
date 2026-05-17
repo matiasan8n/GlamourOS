@@ -237,12 +237,10 @@ export default function AppointmentsPage() {
   resizable
   popup
   toolbar={true}
+  popup
   defaultView="week"
-  views={{
-    month: true,
-    week: true,
-    day: true,
-    agenda: true,
+  views={["month", "week", "day", "agenda"] as any}
+defaultView="month"
   }}
   defaultView="month"
   }}
