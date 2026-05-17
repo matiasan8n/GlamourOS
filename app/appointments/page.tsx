@@ -239,10 +239,12 @@ export default function AppointmentsPage() {
   toolbar={true}
   defaultView="week"
   views={{
-    month: false,
-    day: true,
+    month: true,
     week: true,
+    day: true,
     agenda: true,
+  }}
+  defaultView="month"
   }}
   length={7}
   step={30}
