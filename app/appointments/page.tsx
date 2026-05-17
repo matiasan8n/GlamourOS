@@ -235,7 +235,7 @@ export default function AppointmentsPage() {
           events={events}
           selectable
           resizable
-          defaultView="week"
+          defaultView="day"
           views={["day", "week", "agenda"] as any}
           toolbar={true}
           length={7}
